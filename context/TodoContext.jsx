@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+//useEffect notes todos which have changed & saves new array to LS
 
 // Create the context App
 export const TodoContext = createContext();
@@ -16,6 +17,10 @@ const [todos, setTodos] = useState(() => {
 });
 
     // Add a new todo
+useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+}, [todos]);
+
     const addTodo = (text) => {
         const newTodo = {
             id: Date.now(),
