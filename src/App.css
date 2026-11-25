@@ -1,31 +1,79 @@
-import { useContext } from 'react';
-import { ThemeContext } from './context/ThemeContext';
 
-import TodoInput from './components/TodoInput';
-import TodoList from './components/TodoList';
-import FilterButtons from './components/FilterButtons';
-import ThemeToggleButton from './components/ThemeToggleButtton';
-
-function App () {
-
-  // Access the current theme
-  const { theme } = useContext(ThemeContext);
-
-  return (
-    <div className={`app ${theme}}>
-    <h1> My Todo List </h1>
-
-    <ThemeToggleButton />
-
-    <TodoInput />
-
-    <FilterButtons />
-
-    <TodoList />
-    </div>
-
-  );
+/* Main application */
+.app {
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-export default App;
+/* Light theme */
+.app.light {
+    background-color: #f4f4f4;
+    color: #222;
+}
 
+/* Dark theme */
+.app.dark {
+    background-color: #222;
+    color: #f4f4f4;
+}
+
+/* Heading */
+.app h1 {
+    margin-bottom: 24px;
+}
+
+/* Buttons */
+.app button {
+    margin: 8px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #477a5b;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.app button:hover {
+    background-color: #345d44;
+}
+
+/* Text inputs */
+.app input[type="text"] {
+    padding: 10px;
+    margin: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Todo items */
+.app span {
+    margin: 8px;
+}
+
+/* Completed todos */
+.app input[type="checkbox"]:checked + span {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* Dark theme inputs */
+.app.dark input[type="text"] {
+    background-color: #333;
+    color: white;
+    border-color: #666;
+}
+
+/* Responsive layout */
+@media (max-width: 600px) {
+    .app {
+        padding: 24px 12px;
+    }
+
+    .app input[type="text"] {
+        max-width: 65%;
+    }
+}
