@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback, useMemo } from 'react';
 //useEffect notes todos which have changed & saves new array to LS
 
 // Create the context App
@@ -21,34 +21,36 @@ useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
 }, [todos]);
 
-    const addTodo = (text) => {
+    const addTodo = useCallback((text) => {
         const newTodo = {
             id: Date.now(),
             text: text,
             completed: false,
         };
         // Take data form todos and create newtodo
-        setTodos([...todos, newTodo]);
-    };
+        setTodos((prevTodos) => [...prevTodos, newTodo]);
+    }, []);
 
     // Toggle a todo between completed and active
-    const toggleTodo = (id) => {
-        // Update todos with a new array
-        setTodos(
-            // map() updates array with updated todos, keeping others the same
-            todos.map((todo) =>
+    // useCallback with dependency array to update state
+    const toggleTodo = useCallback((id) => {
+        setTodos((prevTodos) =>
+        // Update todos with a new array with .map()
+        prevTodos.map((todo) =>
+            
+            todo.id === id
+            ? {...todo, completed: !todo.completed }
+            : todo
+)
+    );
+}, []);
+
                 // Ternary operator: if IDs match, update the todo
                 // If not (:), return the original todo unchanged
                 // Spread operator copies properties of the existing todo
                 // Instead of modifying the existing array directly,
                 // we create a new array with the updated todo
                 // and pass that new array to setTodos().
-                todo.id === id
-                    ? { ...todo, completed: !todo.completed }
-                    : todo
-            )
-        );
-    };
 
     // Delete a todo
     const deleteTodo = (id) => {
@@ -65,7 +67,7 @@ useEffect(() => {
             )
         );
     };
-    // Clear all completed todos
+    // Clear ALL completed todos
     const clearCompleted = () => {
         setTodos(todos.filter((todo) => !todo.completed));
     };
